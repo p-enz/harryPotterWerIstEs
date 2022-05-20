@@ -1,13 +1,5 @@
+let pickCharacters = [];
 let allCharacters = [];
-export let pickCharacters = [];
-
-fetchHarryPotter("http://hp-api.herokuapp.com/api/characters");
-
-async function fetchHarryPotter(url) {
-  const response = await fetch(url);
-  const data = await response.json();
-  createAllCharactersArr(data);
-}
 
 function createAllCharactersArr(characters) {
   allCharacters = characters
@@ -48,7 +40,8 @@ function pickCharacter(allCharacters) {
       })
     );
   }
-  //   console.log(pickCharacters, 1);
-  //   pickCharacters.forEach((character) => console.log(character));
+  console.log(pickCharacters);
   return pickCharacters;
 }
+
+export { createAllCharactersArr };
