@@ -15,6 +15,7 @@ async function fetchHarryPotter(url) {
 }
 // test.then((test2) => console.log(test2));
 
+// create Array of Charakters we have
 function createAllCharactersArr(characters) {
   allCharacters = characters
     .filter((character) => character.image.length > 0)
@@ -43,6 +44,7 @@ function createAllCharactersArr(characters) {
   return pickCharacter(allCharacters);
 }
 
+// pick four characters to show
 function pickCharacter(allCharacters) {
   for (let i = 0; i < 4; i++) {
     const rando = randomNum(allCharacters.length);
@@ -57,6 +59,7 @@ function pickCharacter(allCharacters) {
   return pickCharacters;
 }
 
+// render images and hint list
 function renderCards(pickCharacters) {
   const charsContainer = document.createElement("section");
   const hintContainer = document.createElement("section");
@@ -85,8 +88,8 @@ function renderCards(pickCharacters) {
     ancestry = "Unknown",
     patronus = "Unknown",
   } = pickCharacters[numberChosen];
-
-  let hintChosen = [gender, hairColor, house, ancestry, patronus];
+  let hintChosen = [gender, hairColor, house, ancestry, patronus]; // wie kommen wir an die keys von object
+  console.log(Object.keys(pickCharacters[numberChosen]));
 
   hintContainer.innerHTML = `
     <p>Gender: ${hintChosen[0]}</p>
@@ -106,6 +109,7 @@ function renderCards(pickCharacters) {
     location.reload();
   });
 
+  // button sound and check if i am right function
   pickCharacters.forEach((character, index) => {
     const checkBtn = document.querySelector(`#id${index}`);
     const checkImg = document.querySelector(`#img${index}`);
