@@ -25,7 +25,7 @@ img {
 }
 
 .blur {
-  filter: blur(0.5em);
+  _filter: blur(0.5em);
 }
 
 .btn-container {

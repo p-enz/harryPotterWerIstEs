@@ -39,24 +39,24 @@ function createAllCharactersArr(characters) {
         };
       }
     );
-  console.log(allCharacters);
-  return pickCharacter(allCharacters);
+  //return pickCharacter(allCharacters);
+  return shuffleArray(allCharacters);
 }
 
 // pick four characters to show
-function pickCharacter(allCharacters) {
-  for (let i = 0; i < 4; i++) {
-    const rando = randomNum(allCharacters.length);
-    pickCharacters.push(
-      allCharacters.find((character, index) => {
-        if (index === rando) {
-          return character;
-        }
-      })
-    );
-  }
-  return pickCharacters;
-}
+// function pickCharacter(allCharacters) {
+//   for (let i = 0; i < 4; i++) {
+//     const rando = randomNum(allCharacters.length);
+//     pickCharacters.push(
+//       allCharacters.find((character, index) => {
+//         if (index === rando) {
+//           return character;
+//         }
+//       })
+//     );
+//   }
+//   return pickCharacters;
+// }
 
 // render images and hint list
 function renderCards(pickCharacters) {
@@ -125,4 +125,15 @@ function renderCards(pickCharacters) {
 
 function randomNum(num) {
   return Math.floor(Math.random() * num);
+}
+
+//replace pickCharacter()
+function shuffleArray(array) {
+  for (let i = 0; i < array.length; i++) {
+    const temp = array[i];
+    const switchIndex = randomNum(array.length);
+    array[i] = array[switchIndex];
+    array[switchIndex] = temp;
+  }
+  return array;
 }
