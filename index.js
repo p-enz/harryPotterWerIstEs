@@ -13,9 +13,8 @@ async function fetchHarryPotter(url) {
 
   renderCards(createAllCharactersArr(data));
 }
-// test.then((test2) => console.log(test2));
 
-// create Array of Charakters we have
+// create Array of Characters we have
 function createAllCharactersArr(characters) {
   allCharacters = characters
     .filter((character) => character.image.length > 0)
@@ -23,24 +22,24 @@ function createAllCharactersArr(characters) {
       ({
         name,
         gender,
-        hairColor = "",
-        house = "",
-        ancestry = "",
-        patronus = "",
+        hairColor = "unknown",
+        house = "unkown",
+        ancestry = "unknown",
+        patronus = "unknown",
         image = "",
       }) => {
         return {
-          name: name,
-          gender: gender,
-          hairColor: hairColor,
-          house: house,
-          ancestry: ancestry,
-          patronus: patronus,
+          Name: name,
+          Gender: gender,
+          "Hair Color": hairColor,
+          House: house,
+          Ancestry: ancestry,
+          Patronus: patronus,
           image: image,
-          theChosenOne: false,
         };
       }
     );
+  console.log(allCharacters);
   return pickCharacter(allCharacters);
 }
 
