@@ -109,7 +109,11 @@ function renderHints(pickCharacters) {
         winSound.play();
         isGameOver = true;
         const nextBtn = document.querySelector("[data-js='nextHint_Person']");
-        nextBtn.textContent = "Play Again";
+        nextBtn.innerHTML = `Play 
+    <svg class="flashlight"
+viewBox="0 0 24 24"
+style=" fill:#000000;"><path d="M7.696,23c-0.161,0-0.323-0.039-0.472-0.119c-0.419-0.225-0.622-0.713-0.485-1.169l2.853-9.501l-3.477,0.497 c-0.752,0.107-1.492-0.214-1.926-0.84s-0.478-1.43-0.113-2.098L8.102,1.56C8.27,1.217,8.619,1,9,1h6c0.36,0,0.693,0.193,0.87,0.507 c0.178,0.314,0.173,0.699-0.013,1.008l-1.961,3.269l4.507-0.501C19.218,5.195,20,5.602,20.388,6.327s0.296,1.601-0.233,2.23 L8.466,22.639C8.271,22.874,7.986,23,7.696,23z M11,10c0.289,0,0.566,0.125,0.758,0.348c0.222,0.259,0.297,0.613,0.199,0.94 l-1.888,6.288L18.62,7.275l-6.51,0.719c-0.382,0.038-0.747-0.134-0.952-0.454c-0.205-0.32-0.211-0.729-0.016-1.055L13.234,3h-3.61 l-3.771,7.689l5.005-0.68C10.906,10.003,10.953,10,11,10z"></path><path d="M15,2H9l-4.045,8.249c-0.394,0.723,0.205,1.585,1.019,1.469L11,11L7.697,22L19.39,7.914 c0.581-0.691,0.022-1.737-0.876-1.638L12,7L15,2z" opacity=".35"></path></svg>
+    Again`;
       } else {
         loseSound.play();
       }
@@ -134,19 +138,25 @@ function shuffleArray(array) {
 
 function nextHint(data) {
   const hintContainer = document.querySelector(".hintContainer");
+  document.querySelector(".hintContainer").scrollIntoView();
   const nextBtn = document.querySelector("[data-js='nextHint_Person']");
   const hint = document.createElement("p");
   const key = Object.keys(data[numberChosen])[hintIndices[hintCounter]];
   if (data[numberChosen][key] === "") {
     hint.textContent = `${key}: unkown`;
   } else {
-    hint.textContent = `${key}: ${data[numberChosen][key]}`;
+    hint.textContent = `${key}: ${data[numberChosen][key]}
+    `;
   }
   hintContainer.insertBefore(hint, hintContainer.firstChild);
   hintCounter++;
   console.log(hintCounter);
   if (hintCounter > 5) {
-    nextBtn.textContent = "Play Again";
+    nextBtn.innerHTML = `Play 
+    <svg class="flashlight"
+viewBox="0 0 24 24"
+style=" fill:#000000;"><path d="M7.696,23c-0.161,0-0.323-0.039-0.472-0.119c-0.419-0.225-0.622-0.713-0.485-1.169l2.853-9.501l-3.477,0.497 c-0.752,0.107-1.492-0.214-1.926-0.84s-0.478-1.43-0.113-2.098L8.102,1.56C8.27,1.217,8.619,1,9,1h6c0.36,0,0.693,0.193,0.87,0.507 c0.178,0.314,0.173,0.699-0.013,1.008l-1.961,3.269l4.507-0.501C19.218,5.195,20,5.602,20.388,6.327s0.296,1.601-0.233,2.23 L8.466,22.639C8.271,22.874,7.986,23,7.696,23z M11,10c0.289,0,0.566,0.125,0.758,0.348c0.222,0.259,0.297,0.613,0.199,0.94 l-1.888,6.288L18.62,7.275l-6.51,0.719c-0.382,0.038-0.747-0.134-0.952-0.454c-0.205-0.32-0.211-0.729-0.016-1.055L13.234,3h-3.61 l-3.771,7.689l5.005-0.68C10.906,10.003,10.953,10,11,10z"></path><path d="M15,2H9l-4.045,8.249c-0.394,0.723,0.205,1.585,1.019,1.469L11,11L7.697,22L19.39,7.914 c0.581-0.691,0.022-1.737-0.876-1.638L12,7L15,2z" opacity=".35"></path></svg>
+    Again`;
     isGameOver = true;
   }
 }
