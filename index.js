@@ -1,29 +1,35 @@
 let pickCharacters = [];
 let allCharacters = [];
 const numberChosen = randomNum(4);
+const hintIndices = shuffleArray([1, 2, 3, 4, 5]);
+hintIndices.push(0); // we add index 0 that the name comes always last
+let hintCounter = 0; // @Ulrike war bei dir nextHintIndex
 
-const audio = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
-const magic = new Audio("applause.mp3");
+let isGameOver = false;
 
-const test = fetchHarryPotter("http://hp-api.herokuapp.com/api/characters");
+const loseSound = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
+const winSound = new Audio("applause.mp3");
+fetchHarryPotter("http://hp-api.herokuapp.com/api/characters");
 
 async function fetchHarryPotter(url) {
   const response = await fetch(url);
   const data = await response.json();
 
-  renderCharacters(createAllCharactersArr(data));
-  renderHints(createAllCharactersArr(data));
+  const finalDataSet = createAllCharactersArr(data);
+  renderCharacters(finalDataSet);
+  renderHints(finalDataSet);
 }
 
 // create Array of Characters we have
 function createAllCharactersArr(characters) {
+  console.log(characters[21]);
   allCharacters = characters
     .filter((character) => character.image.length > 0)
     .map(
       ({
         name,
         gender,
-        hairColor = "unknown",
+        hairColour = "unknown",
         house = "unkown",
         ancestry = "unknown",
         patronus = "unknown",
@@ -32,7 +38,7 @@ function createAllCharactersArr(characters) {
         return {
           Name: name,
           Gender: gender,
-          "Hair Color": hairColor,
+          "Hair Color": hairColour,
           House: house,
           Ancestry: ancestry,
           Patronus: patronus,
@@ -40,11 +46,11 @@ function createAllCharactersArr(characters) {
         };
       }
     );
+  console.log(allCharacters[21]);
   return shuffleArray(allCharacters);
 }
 function renderCharacters(pickCharacters) {
-  const charsContainer = document.createElement("section");
-  charsContainer.classList.add("charContainer");
+  const charsContainer = document.querySelector(".charContainer");
 
   for (let index = 0; index < 4; index++) {
     const personContainer = document.createElement("div");
@@ -60,31 +66,18 @@ function renderCharacters(pickCharacters) {
 }
 
 function renderHints(pickCharacters) {
-  const hintContainer = document.createElement("section");
-  hintContainer.classList.add("hintContainer");
-  // const {
-  //   gender = "Unknown",
-  //   hairColor = "Unknown",
-  //   house = "Unknown",
-  //   ancestry = "Unknown",
-  //   patronus = "Unknown",
-  // } = pickCharacters[numberChosen];
-  let hintChosen = [gender, hairColor, house, ancestry, patronus]; // wie kommen wir an die keys von object
-  hintContainer.innerHTML = `
-    <p>Gender: ${hintChosen[0]}</p>
-    <p id="hint2">Hair Color: ${hintChosen[1]}</p>
-    <p id="hint3">House: ${hintChosen[2]}</p>
-    <p id="hint4">Ancestry: ${hintChosen[3]}</p>
-    <p id="hint4">Patronus: ${hintChosen[4]}</p>
-    <p id="hint5">Name: ${pickCharacters[numberChosen].name}</p>
-    <button type="button" data-js="nextPerson">Next Person</button>
-    `;
+  const hintContainer = document.querySelector(".hintContainer");
 
   document.body.append(hintContainer);
+  nextHint(pickCharacters);
 
-  const nextPersonBtn = document.querySelector("[data-js='nextPerson']");
-  nextPersonBtn.addEventListener("click", () => {
-    location.reload();
+  const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+  nextBtn.addEventListener("click", () => {
+    if (isGameOver) {
+      location.reload();
+    } else {
+      nextHint(pickCharacters);
+    }
   });
 
   // button sound and check if i am right function
@@ -94,9 +87,9 @@ function renderHints(pickCharacters) {
     checkBtn.addEventListener("click", () => {
       if (index === numberChosen) {
         checkImg.classList.toggle("blur");
-        magic.play();
+        winSound.play();
       } else {
-        audio.play();
+        loseSound.play();
       }
     });
   });
@@ -115,4 +108,23 @@ function shuffleArray(array) {
     array[switchIndex] = temp;
   }
   return array;
+}
+
+function nextHint(data) {
+  const hintContainer = document.querySelector(".hintContainer");
+  const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+  const hint = document.createElement("p");
+  const key = Object.keys(data[numberChosen])[hintIndices[hintCounter]];
+  if (data[numberChosen][key] === "") {
+    hint.textContent = `${key}: unkown`;
+  } else {
+    hint.textContent = `${key}: ${data[numberChosen][key]}`;
+  }
+  hintContainer.insertBefore(hint, hintContainer.firstChild);
+  hintCounter++;
+  console.log(hintCounter);
+  if (hintCounter > 5) {
+    nextBtn.textContent = "Play Again";
+    isGameOver = true;
+  }
 }
