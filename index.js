@@ -22,7 +22,6 @@ async function fetchHarryPotter(url) {
 
 // create Array of Characters we have
 function createAllCharactersArr(characters) {
-  console.log(characters[21]);
   allCharacters = characters
     .filter((character) => character.image.length > 0)
     .map(
@@ -46,9 +45,9 @@ function createAllCharactersArr(characters) {
         };
       }
     );
-  console.log(allCharacters[21]);
   return shuffleArray(allCharacters);
 }
+
 function renderCharacters(pickCharacters) {
   const charsContainer = document.querySelector(".charContainer");
 
@@ -88,6 +87,9 @@ function renderHints(pickCharacters) {
       if (index === numberChosen) {
         checkImg.classList.toggle("blur");
         winSound.play();
+        isGameOver = true;
+        const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+        nextBtn.textContent = "Play Again";
       } else {
         loseSound.play();
       }
