@@ -1,3 +1,13 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --gold: gold;
+  --goldrod: goldenrod;
+  --goldbrown: #996515;
+  --metallic-gold: #d4af37;
+}
 .charContainer {
   width: 100%;
   padding: 1em 0;
