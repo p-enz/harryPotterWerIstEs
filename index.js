@@ -1,21 +1,26 @@
 let pickCharacters = [];
 let allCharacters = [];
-let numberChosen = 0;
+const numberChosen = randomNum(4);
+const hintIndices = shuffleArray([1, 2, 3, 4, 5]);
+hintIndices.push(0); // we add index 0 that the name comes always last
+let hintCounter = 0; // @Ulrike war bei dir nextHintIndex
 
-const audio = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
-const magic = new Audio("applause.mp3");
+let isGameOver = false;
 
-const test = fetchHarryPotter("http://hp-api.herokuapp.com/api/characters");
+const loseSound = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
+const winSound = new Audio("applause.mp3");
+fetchHarryPotter("http://hp-api.herokuapp.com/api/characters");
 
 async function fetchHarryPotter(url) {
   const response = await fetch(url);
   const data = await response.json();
 
-  renderCards(createAllCharactersArr(data));
+  const finalDataSet = createAllCharactersArr(data);
+  renderCharacters(finalDataSet);
+  renderHints(finalDataSet);
 }
-// test.then((test2) => console.log(test2));
 
-// create Array of Charakters we have
+// create Array of Characters we have
 function createAllCharactersArr(characters) {
   allCharacters = characters
     .filter((character) => character.image.length > 0)
@@ -23,90 +28,55 @@ function createAllCharactersArr(characters) {
       ({
         name,
         gender,
-        hairColor = "",
-        house = "",
-        ancestry = "",
-        patronus = "",
+        hairColour = "unknown",
+        house = "unkown",
+        ancestry = "unknown",
+        patronus = "unknown",
         image = "",
       }) => {
         return {
-          name: name,
-          gender: gender,
-          hairColor: hairColor,
-          house: house,
-          ancestry: ancestry,
-          patronus: patronus,
+          Name: name,
+          Gender: gender,
+          "Hair Color": hairColour,
+          House: house,
+          Ancestry: ancestry,
+          Patronus: patronus,
           image: image,
-          theChosenOne: false,
         };
       }
     );
-  return pickCharacter(allCharacters);
+  return shuffleArray(allCharacters);
 }
 
-// pick four characters to show
-function pickCharacter(allCharacters) {
-  for (let i = 0; i < 4; i++) {
-    const rando = randomNum(allCharacters.length);
-    pickCharacters.push(
-      allCharacters.find((character, index) => {
-        if (index === rando) {
-          return character;
-        }
-      })
-    );
-  }
-  return pickCharacters;
-}
+function renderCharacters(pickCharacters) {
+  const charsContainer = document.querySelector(".charContainer");
 
-// render images and hint list
-function renderCards(pickCharacters) {
-  const charsContainer = document.createElement("section");
-  const hintContainer = document.createElement("section");
-
-  charsContainer.classList.add("charContainer");
-  hintContainer.classList.add("hintContainer");
-
-  pickCharacters.forEach((character, index) => {
-    const charContainer = document.createElement("div");
-    charContainer.innerHTML = `
-    <img id="img${index}" class="blur"  src=${character.image} alt="">
+  for (let index = 0; index < 4; index++) {
+    const personContainer = document.createElement("div");
+    personContainer.innerHTML = `
+    <img id="img${index}" class="blur"  src=${pickCharacters[index].image} alt="">
     <div class="btn-container">
         <button id="id${index}" type="button"class="btn" >&#9989</button>
     </div>
     `;
-    charsContainer.append(charContainer);
-  });
-
-  numberChosen = randomNum(4);
-  pickCharacters[numberChosen].theChosenOne = true;
-
-  const {
-    gender = "Unknown",
-    hairColor = "Unknown",
-    house = "Unknown",
-    ancestry = "Unknown",
-    patronus = "Unknown",
-  } = pickCharacters[numberChosen];
-  let hintChosen = [gender, hairColor, house, ancestry, patronus]; // wie kommen wir an die keys von object
-  console.log(Object.keys(pickCharacters[numberChosen]));
-
-  hintContainer.innerHTML = `
-    <p>Gender: ${hintChosen[0]}</p>
-    <p id="hint2">Hair Color: ${hintChosen[1]}</p>
-    <p id="hint3">House: ${hintChosen[2]}</p>
-    <p id="hint4">Ancestry: ${hintChosen[3]}</p>
-    <p id="hint4">Patronus: ${hintChosen[4]}</p>
-    <p id="hint5">Name: ${pickCharacters[numberChosen].name}</p>
-    <button type="button" data-js="nextPerson">Next Person</button>
-    `;
-
+    charsContainer.append(personContainer);
+  }
   document.body.append(charsContainer);
-  document.body.append(hintContainer);
+}
 
-  const nextPersonBtn = document.querySelector("[data-js='nextPerson']");
-  nextPersonBtn.addEventListener("click", () => {
-    location.reload();
+function renderHints(pickCharacters) {
+  const hintContainer = document.querySelector(".hintContainer");
+
+  document.body.append(hintContainer);
+  nextHint(pickCharacters);
+
+  const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+  nextBtn.addEventListener("click", () => {
+    if (isGameOver) {
+      location.reload();
+    } else {
+      nextHint(pickCharacters);
+    }
   });
 
   // button sound and check if i am right function
@@ -116,9 +86,12 @@ function renderCards(pickCharacters) {
     checkBtn.addEventListener("click", () => {
       if (index === numberChosen) {
         checkImg.classList.toggle("blur");
-        magic.play();
+        winSound.play();
+        isGameOver = true;
+        const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+        nextBtn.textContent = "Play Again";
       } else {
-        audio.play();
+        loseSound.play();
       }
     });
   });
@@ -126,4 +99,34 @@ function renderCards(pickCharacters) {
 
 function randomNum(num) {
   return Math.floor(Math.random() * num);
+}
+
+//replace pickCharacter()
+function shuffleArray(array) {
+  for (let i = 0; i < array.length; i++) {
+    const temp = array[i];
+    const switchIndex = randomNum(array.length);
+    array[i] = array[switchIndex];
+    array[switchIndex] = temp;
+  }
+  return array;
+}
+
+function nextHint(data) {
+  const hintContainer = document.querySelector(".hintContainer");
+  const nextBtn = document.querySelector("[data-js='nextHint_Person']");
+  const hint = document.createElement("p");
+  const key = Object.keys(data[numberChosen])[hintIndices[hintCounter]];
+  if (data[numberChosen][key] === "") {
+    hint.textContent = `${key}: unkown`;
+  } else {
+    hint.textContent = `${key}: ${data[numberChosen][key]}`;
+  }
+  hintContainer.insertBefore(hint, hintContainer.firstChild);
+  hintCounter++;
+  console.log(hintCounter);
+  if (hintCounter > 5) {
+    nextBtn.textContent = "Play Again";
+    isGameOver = true;
+  }
 }
