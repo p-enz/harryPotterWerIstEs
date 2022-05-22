@@ -1,6 +1,6 @@
 let pickCharacters = [];
 let allCharacters = [];
-let numberChosen = 0;
+const numberChosen = randomNum(4);
 
 const audio = new Audio("https://www.soundjay.com/buttons/beep-01a.mp3");
 const magic = new Audio("applause.mp3");
@@ -11,7 +11,8 @@ async function fetchHarryPotter(url) {
   const response = await fetch(url);
   const data = await response.json();
 
-  renderCards(createAllCharactersArr(data));
+  renderCharacters(createAllCharactersArr(data));
+  renderHints(createAllCharactersArr(data));
 }
 
 // create Array of Characters we have
@@ -39,57 +40,36 @@ function createAllCharactersArr(characters) {
         };
       }
     );
-  //return pickCharacter(allCharacters);
   return shuffleArray(allCharacters);
 }
-
-// pick four characters to show
-// function pickCharacter(allCharacters) {
-//   for (let i = 0; i < 4; i++) {
-//     const rando = randomNum(allCharacters.length);
-//     pickCharacters.push(
-//       allCharacters.find((character, index) => {
-//         if (index === rando) {
-//           return character;
-//         }
-//       })
-//     );
-//   }
-//   return pickCharacters;
-// }
-
-// render images and hint list
-function renderCards(pickCharacters) {
+function renderCharacters(pickCharacters) {
   const charsContainer = document.createElement("section");
-  const hintContainer = document.createElement("section");
-
   charsContainer.classList.add("charContainer");
-  hintContainer.classList.add("hintContainer");
 
-  pickCharacters.forEach((character, index) => {
-    const charContainer = document.createElement("div");
-    charContainer.innerHTML = `
-    <img id="img${index}" class="blur"  src=${character.image} alt="">
+  for (let index = 0; index < 4; index++) {
+    const personContainer = document.createElement("div");
+    personContainer.innerHTML = `
+    <img id="img${index}" class="blur"  src=${pickCharacters[index].image} alt="">
     <div class="btn-container">
         <button id="id${index}" type="button"class="btn" >&#9989</button>
     </div>
     `;
-    charsContainer.append(charContainer);
-  });
+    charsContainer.append(personContainer);
+  }
+  document.body.append(charsContainer);
+}
 
-  numberChosen = randomNum(4);
-  pickCharacters[numberChosen].theChosenOne = true;
-
-  const {
-    gender = "Unknown",
-    hairColor = "Unknown",
-    house = "Unknown",
-    ancestry = "Unknown",
-    patronus = "Unknown",
-  } = pickCharacters[numberChosen];
+function renderHints(pickCharacters) {
+  const hintContainer = document.createElement("section");
+  hintContainer.classList.add("hintContainer");
+  // const {
+  //   gender = "Unknown",
+  //   hairColor = "Unknown",
+  //   house = "Unknown",
+  //   ancestry = "Unknown",
+  //   patronus = "Unknown",
+  // } = pickCharacters[numberChosen];
   let hintChosen = [gender, hairColor, house, ancestry, patronus]; // wie kommen wir an die keys von object
-  console.log(Object.keys(pickCharacters[numberChosen]));
-
   hintContainer.innerHTML = `
     <p>Gender: ${hintChosen[0]}</p>
     <p id="hint2">Hair Color: ${hintChosen[1]}</p>
@@ -100,7 +80,6 @@ function renderCards(pickCharacters) {
     <button type="button" data-js="nextPerson">Next Person</button>
     `;
 
-  document.body.append(charsContainer);
   document.body.append(hintContainer);
 
   const nextPersonBtn = document.querySelector("[data-js='nextPerson']");
