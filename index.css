@@ -1,29 +1,73 @@
+@font-face {
+  font-family: "Harry Potter";
+  src: url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.eot");
+  src: url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.svg#Harry Potter")
+      format("svg");
+}
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --gold: gold;
   --goldrod: goldenrod;
   --goldbrown: #996515;
   --metallic-gold: #d4af37;
+  --darkRed: #740001;
+  --gryffindorRed: #ae0001;
+  --yellow: #eeba30;
+  --gold: #d3a625;
+}
+
+body {
+  background-color: var(--darkRed);
+}
+h1 {
+  font-family: "Harry Potter";
+  color: var(--gold);
+  text-shadow: 1px 1px 10px black;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0;
+}
+h2 {
+  font-family: "Harry Potter";
+  text-shadow: 1px 1px 10px black;
+  color: var(--yellow);
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 0;
+}
+
+svg {
+  width: 3em;
+  height: 3em;
 }
 .charContainer {
   width: 100%;
   padding: 1em 0;
-  background-color: green;
-  margin: 2rem auto;
+  background-color: var(--gryffindorRed);
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   justify-items: center;
   gap: 2em;
+  border-radius: 25px;
+  box-shadow: 1px 2px 10px 10px black;
 }
 
 .hintContainer {
   width: 100%;
-  background-color: green;
-  margin: 2rem auto;
+  background-color: var(--gryffindorRed);
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -38,12 +82,27 @@ img {
   filter: blur(0.5em);
 }
 
-.btn-container {
+/* .btn-container {
   width: 8em;
   display: flex;
   justify-content: space-around;
-}
+} */
 
 p {
   text-align: center;
+  margin: 0;
+  padding: 1em;
+  background: var(--darkRed);
+}
+.btn {
+  background: none;
+  border: none;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+}
+
+.positioning {
+  position: relative;
 }
