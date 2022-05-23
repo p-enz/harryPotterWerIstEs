@@ -1,19 +1,87 @@
+@font-face {
+  font-family: "Harry Potter";
+  src: url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.eot");
+  src: url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/0421d4186d6efbfc5331fe180895e780.svg#Harry Potter")
+      format("svg");
+}
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --goldrod: goldenrod;
+  --goldbrown: #996515;
+  --metallic-gold: #d4af37;
+  /* --darkRed: #600002c2;
+  --gryffindorRed: #8d0000d9; */
+  --darkRed: #2f0102;
+  --gryffindorRed: #4f0000;
+  --lightRed: #680000c4;
+  --yellow: #eeba30;
+  --gold: #d3a625;
+}
+
+body {
+  background: linear-gradient(
+    90deg,
+    var(--darkRed),
+    var(--gryffindorRed),
+    var(--darkRed)
+  );
+}
+
+h1 {
+  font-family: "Harry Potter";
+  color: var(--gold);
+  text-shadow: 1px 1px 10px black;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0;
+}
+h2 {
+  font-family: "Harry Potter";
+  text-shadow: 1px 1px 10px black;
+  color: var(--yellow);
+  font-size: 3rem;
+  text-align: center;
+  margin-top: 0;
+}
+
+svg {
+  width: 3em;
+  height: 3em;
+}
+
+.flashlight {
+  width: 1.5em;
+  height: 1.5em;
+}
+
 .charContainer {
   width: 100%;
   padding: 1em 0;
-  background-color: green;
-  margin: 2rem auto;
+  background-color: var(--lightRed);
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   justify-items: center;
   gap: 2em;
+  border-radius: 25px;
+  box-shadow: 0px 0px 32px 3px rgba(0, 0, 0, 0.69);
 }
 
 .hintContainer {
   width: 100%;
-  background-color: green;
-  margin: 2rem auto;
+  margin: 1em auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,15 +93,38 @@ img {
 }
 
 .blur {
-  filter: blur(0.5em);
-}
-
-.btn-container {
-  width: 8em;
-  display: flex;
-  justify-content: space-around;
+  filter: blur(0.35em);
 }
 
 p {
   text-align: center;
+  margin: 0;
+  padding: 1em;
+  color: var(--goldrod);
+  font-family: "Harry Potter";
+  font-size: 1.5rem;
+}
+
+.btn {
+  background: none;
+  border: none;
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.btn-next {
+  background: var(--gold);
+  border: none;
+  font-size: 1.5rem;
+  color: var(--lightRed);
+  padding-top: 0.5em;
+  font-family: "Harry Potter";
+  border-radius: 15px;
+}
+
+.positioning {
+  position: relative;
 }
