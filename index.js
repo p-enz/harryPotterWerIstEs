@@ -143,7 +143,7 @@ function nextHint(data) {
   const hint = document.createElement("p");
   const key = Object.keys(data[numberChosen])[hintIndices[hintCounter]];
   if (data[numberChosen][key] === "") {
-    hint.textContent = `${key}: unkown`;
+    hint.textContent = `${key}: unknown`;
   } else {
     hint.textContent = `${key}: ${data[numberChosen][key]}
     `;
